@@ -29,13 +29,13 @@ export type Product = {
 };
 
 export type Filters = {
-  sport?: Sport;
-  league?: string;
-  q?: string;
-  sort?: SortKey;
-  size?: string;
-  min?: number;
-  max?: number;
+  sport?: Sport | undefined;
+  league?: string | undefined;
+  q?: string | undefined;
+  sort?: SortKey | undefined;
+  size?: string | undefined;
+  min?: number | undefined;
+  max?: number | undefined;
 };
 
 /** Pure filtering/sorting used by the shop pages. */

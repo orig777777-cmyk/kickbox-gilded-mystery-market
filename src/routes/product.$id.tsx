@@ -38,7 +38,7 @@ function ProductPage() {
 
   const needsSize = p.sizes.length > 0;
   const add = () => {
-    if (needsSize && !size) return toast.error("Please choose a size");
+    if (needsSize && !size) { toast.error("Please choose a size"); return; }
     cart.add({ id: p.id, name: p.name, price: p.price, size: size ?? "-", imageSrc: p.imageSrc });
     toast.success("Added to cart");
   };

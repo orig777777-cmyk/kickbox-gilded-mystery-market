@@ -57,13 +57,13 @@ function Admin() {
 
   const toggle = async (p: Product) => {
     const { error } = await supabase.from("products").update({ available: !p.available }).eq("id", p.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     qc.invalidateQueries({ queryKey: ["products"] });
   };
   const del = async (p: Product) => {
     if (!confirm(`Delete "${p.name}"?`)) return;
     const { error } = await supabase.from("products").delete().eq("id", p.id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await removeProductImage(p.image_url);
     qc.invalidateQueries({ queryKey: ["products"] });
     toast.success("Product deleted");
@@ -156,7 +156,7 @@ function ProductForm({ product, onDone }: { product: Product | null; onDone: () 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const parsed = schema.safeParse({ name, description, price: price === "" ? NaN : Number(price), sport, league, sizes, available });
-    if (!parsed.success) return toast.error(parsed.error.issues[0].message);
+    if (!parsed.success) { toast.error(parsed.error.issues[0]?.message ?? "Invalid input"); return; }
     setBusy(true);
     try {
       let image_url = product?.image_url ?? null;

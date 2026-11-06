@@ -4,7 +4,7 @@ import { applyFilters, LEAGUES, SIZES, SORTS, type Filters, type SortKey, type S
 import { productsQuery } from "@/lib/products";
 import { EmptyState, ProductCard } from "./ProductCard";
 
-export type ShopSearch = Omit<Filters, "sport"> & { sport?: Sport };
+export type ShopSearch = Filters;
 
 export function parseShopSearch(s: Record<string, unknown>): ShopSearch {
   const str = (v: unknown) => (typeof v === "string" && v ? v : undefined);
@@ -12,9 +12,9 @@ export function parseShopSearch(s: Record<string, unknown>): ShopSearch {
     const n = Number(v);
     return v !== undefined && v !== "" && Number.isFinite(n) ? n : undefined;
   };
-  const sport = s.sport === "football" || s.sport === "basketball" ? s.sport : undefined;
-  const sort = str(s.sort) && str(s.sort)! in SORTS ? (s.sort as SortKey) : undefined;
-  return { sport, league: str(s.league), q: str(s.q), sort, size: str(s.size), min: num(s.min), max: num(s.max) };
+  const sport = s["sport"] === "football" || s["sport"] === "basketball" ? s["sport"] : undefined;
+  const sort = str(s["sort"]) && str(s["sort"])! in SORTS ? (s["sort"] as SortKey) : undefined;
+  return { sport, league: str(s["league"]), q: str(s["q"]), sort, size: str(s["size"]), min: num(s["min"]), max: num(s["max"]) };
 }
 
 const selectCls =

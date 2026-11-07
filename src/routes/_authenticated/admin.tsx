@@ -200,7 +200,7 @@ function ProductForm({ product, onDone }: { product: Product | null; onDone: () 
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className={label}>Price (USD)</label>
+          <label className={label}>Price (ILS · ₪)</label>
           <input type="number" step="0.01" min="0" className={input} value={price} onChange={(e) => setPrice(e.target.value)} />
         </div>
         <div>

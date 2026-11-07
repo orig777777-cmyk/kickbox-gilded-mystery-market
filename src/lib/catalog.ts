@@ -63,4 +63,4 @@ export function applyFilters(products: Product[], f: Filters): Product[] {
 }
 
 export const formatPrice = (n: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(n);
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "ILS", currencyDisplay: "narrowSymbol" }).format(n);

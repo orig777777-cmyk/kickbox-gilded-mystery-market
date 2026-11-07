@@ -8,7 +8,7 @@ import { useCart } from "@/lib/cart";
 
 // Publishable PayPal client ID (safe to ship in the browser).
 const PAYPAL_CLIENT_ID =
-  "BAAPqx-gFlOIo5OrPgp2zp6wLxqHFkJKDQNNu9rhv8691-CKJQ3c6lEh8dsG5edE_WO1e5Ltnz0Vf5c0YU";
+  "BAAPqx-gFIOlo5OrPgp2zp6wLxqHFkJKDQNNu9rhv8691-CKJQ3c6lEh8dsG5edE_WO1e5Ltnz0Vf5c0YU";
 
 export function PayPalCheckout() {
   const { items, total, clear } = useCart();

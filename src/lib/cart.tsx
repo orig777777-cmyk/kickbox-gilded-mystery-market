@@ -1,18 +1,7 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { useContext, useEffect, useState, type ReactNode } from "react";
+import { CartContext, type CartContextValue, type CartItem } from "@/lib/cart-context";
 
-export type CartItem = { id: string; name: string; price: number; size: string; qty: number; imageSrc?: string | null | undefined };
-
-type Ctx = {
-  items: CartItem[];
-  add: (item: Omit<CartItem, "qty">) => void;
-  setQty: (id: string, size: string, qty: number) => void;
-  remove: (id: string, size: string) => void;
-  clear: () => void;
-  count: number;
-  total: number;
-};
-
-const CartContext = createContext<Ctx | null>(null);
+export type { CartItem } from "@/lib/cart-context";
 const KEY = "kickbox-cart";
 
 export function CartProvider({ children }: { children: ReactNode }) {
@@ -27,7 +16,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems(next);
     localStorage.setItem(KEY, JSON.stringify(next));
   };
-  const value: Ctx = {
+  const value: CartContextValue = {
     items,
     add: (item) => {
       const found = items.find((i) => i.id === item.id && i.size === item.size);

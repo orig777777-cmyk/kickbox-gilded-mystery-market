@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Minus, Plus, Trash2 } from "lucide-react";
-import { toast } from "sonner";
+import { PayPalCheckout } from "@/components/PayPalCheckout";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ProductCard";
 import { useCart } from "@/lib/cart";
@@ -51,8 +51,8 @@ function Cart() {
           </ul>
           <div className="mt-6 flex items-center justify-between">
             <p className="font-display text-3xl">Total <span className="text-gold">{formatPrice(total)}</span></p>
-            <Button variant="gold" size="lg" onClick={() => toast.info("Checkout is coming soon.")}>Checkout</Button>
           </div>
+          <PayPalCheckout />
         </>
       )}
     </div>

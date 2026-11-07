@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BasketballRouteImport } from './routes/basketball'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as FootballRouteImport } from './routes/football'
+import { Route as OrderSuccessRouteImport } from './routes/order-success'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ProductIdRouteImport } from './routes/product.$id'
@@ -48,6 +49,11 @@ const FootballRoute = FootballRouteImport.update({
   path: '/football',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OrderSuccessRoute = OrderSuccessRouteImport.update({
+  id: '/order-success',
+  path: '/order-success',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
   path: '/shop',
@@ -70,6 +76,7 @@ export interface FileRoutesByFullPath {
   '/basketball': typeof BasketballRoute
   '/cart': typeof CartRoute
   '/football': typeof FootballRoute
+  '/order-success': typeof OrderSuccessRoute
   '/shop': typeof ShopRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/product/$id': typeof ProductIdRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByTo {
   '/basketball': typeof BasketballRoute
   '/cart': typeof CartRoute
   '/football': typeof FootballRoute
+  '/order-success': typeof OrderSuccessRoute
   '/shop': typeof ShopRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/product/$id': typeof ProductIdRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   '/basketball': typeof BasketballRoute
   '/cart': typeof CartRoute
   '/football': typeof FootballRoute
+  '/order-success': typeof OrderSuccessRoute
   '/shop': typeof ShopRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/product/$id': typeof ProductIdRoute
@@ -104,6 +113,7 @@ export interface FileRouteTypes {
     | '/basketball'
     | '/cart'
     | '/football'
+    | '/order-success'
     | '/shop'
     | '/admin'
     | '/product/$id'
@@ -114,6 +124,7 @@ export interface FileRouteTypes {
     | '/basketball'
     | '/cart'
     | '/football'
+    | '/order-success'
     | '/shop'
     | '/admin'
     | '/product/$id'
@@ -125,6 +136,7 @@ export interface FileRouteTypes {
     | '/basketball'
     | '/cart'
     | '/football'
+    | '/order-success'
     | '/shop'
     | '/_authenticated/admin'
     | '/product/$id'
@@ -137,6 +149,7 @@ export interface RootRouteChildren {
   BasketballRoute: typeof BasketballRoute
   CartRoute: typeof CartRoute
   FootballRoute: typeof FootballRoute
+  OrderSuccessRoute: typeof OrderSuccessRoute
   ShopRoute: typeof ShopRoute
   ProductIdRoute: typeof ProductIdRoute
 }
@@ -185,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FootballRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/order-success': {
+      id: '/order-success'
+      path: '/order-success'
+      fullPath: '/order-success'
+      preLoaderRoute: typeof OrderSuccessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shop': {
       id: '/shop'
       path: '/shop'
@@ -227,6 +247,7 @@ const rootRouteChildren: RootRouteChildren = {
   BasketballRoute: BasketballRoute,
   CartRoute: CartRoute,
   FootballRoute: FootballRoute,
+  OrderSuccessRoute: OrderSuccessRoute,
   ShopRoute: ShopRoute,
   ProductIdRoute: ProductIdRoute,
 }

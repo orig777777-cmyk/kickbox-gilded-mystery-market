@@ -9,6 +9,8 @@ export const Route = createFileRoute("/football")({
       { name: "description", content: "Football mystery boxes from the Premier League, La Liga, Bundesliga, Serie A and Ligue 1." },
       { property: "og:title", content: "Football Mystery Boxes | KICKBOX" },
       { property: "og:description", content: "Football mystery boxes from Europe's top leagues." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Page,

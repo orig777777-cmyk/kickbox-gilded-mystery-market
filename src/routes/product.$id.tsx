@@ -8,6 +8,10 @@ import { EmptyState } from "@/components/ProductCard";
 import { formatPrice } from "@/lib/catalog";
 import { productsQuery } from "@/lib/products";
 import { useCart } from "@/lib/cart";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { PayPalCheckout } from "@/components/PayPalCheckout";
+import { directCheckoutItem } from "@/lib/checkout";
+import type { CartItem } from "@/lib/cart-context";
 
 export const Route = createFileRoute("/product/$id")({
   head: () => ({
@@ -16,6 +20,8 @@ export const Route = createFileRoute("/product/$id")({
       { name: "description", content: "KICKBOX premium mystery box details." },
       { property: "og:title", content: "Mystery Box | KICKBOX" },
       { property: "og:description", content: "KICKBOX premium mystery box details." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: ProductPage,
@@ -26,6 +32,7 @@ function ProductPage() {
   const { data = [], isLoading } = useQuery(productsQuery);
   const p = data.find((x) => x.id === id);
   const [size, setSize] = useState<string>();
+  const [buyNowItem, setBuyNowItem] = useState<CartItem | null>(null);
   const cart = useCart();
 
   if (isLoading) return <div className="p-20 text-center text-muted-foreground">Loading…</div>;
@@ -60,9 +67,9 @@ function ProductPage() {
             <p className="mb-2 text-xs font-semibold uppercase tracking-widest">Size</p>
             <div className="flex flex-wrap gap-2">
               {p.sizes.map((s) => (
-                <button key={s} onClick={() => setSize(s)} className={`min-w-12 rounded border px-3 py-2 text-sm ${size === s ? "border-gold bg-gold text-primary-foreground" : "border-border hover:border-gold/60"}`}>
+                <Button variant={size === s ? "gold" : "outline"} key={s} onClick={() => setSize(s)} className="min-w-12" aria-pressed={size === s}>
                   {s}
-                </button>
+                </Button>
               ))}
             </div>
           </div>
@@ -70,6 +77,16 @@ function ProductPage() {
         <Button variant="gold" size="lg" className="mt-8 w-full" disabled={!p.available} onClick={add}>
           {p.available ? "Add to cart" : "Sold out"}
         </Button>
+        <Button variant="goldOutline" size="lg" className="mt-3 w-full" disabled={!p.available} onClick={() => {
+          try { setBuyNowItem(directCheckoutItem(p, size)); }
+          catch (error) { toast.error(error instanceof Error ? error.message : "Please choose a size"); }
+        }}>Buy now</Button>
+        <Dialog open={buyNowItem !== null} onOpenChange={(open) => { if (!open) setBuyNowItem(null); }}>
+          <DialogContent className="max-h-[90dvh] overflow-y-auto">
+            <DialogHeader><DialogTitle className="font-display text-3xl">Buy now</DialogTitle></DialogHeader>
+            {buyNowItem && <><p className="break-words font-semibold">{buyNowItem.name} · Size {buyNowItem.size}</p><p className="text-2xl text-gold">{formatPrice(buyNowItem.price)}</p><PayPalCheckout compact checkoutItems={[buyNowItem]} onComplete={() => setBuyNowItem(null)} /></>}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

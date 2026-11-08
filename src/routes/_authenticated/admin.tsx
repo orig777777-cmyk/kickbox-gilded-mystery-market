@@ -10,6 +10,9 @@ import { Switch } from "@/components/ui/switch";
 import { supabase } from "@/integrations/supabase/client";
 import { formatPrice, LEAGUES, SIZES, type Product, type Sport } from "@/lib/catalog";
 import { productsQuery, removeProductImage, uploadProductImage } from "@/lib/products";
+import { AdminOrders } from "@/components/AdminOrders";
+import { AdminContent } from "@/components/AdminContent";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
@@ -18,6 +21,8 @@ export const Route = createFileRoute("/_authenticated/admin")({
       { name: "description", content: "Manage KICKBOX products." },
       { property: "og:title", content: "Admin Dashboard | KICKBOX" },
       { property: "og:description", content: "Manage KICKBOX products." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -82,7 +87,16 @@ function Admin() {
         </div>
       </div>
 
-      <div className="mt-8 overflow-hidden rounded-lg border border-border bg-card">
+      <Tabs defaultValue="products" className="mt-8">
+        <TabsList className="w-full sm:w-auto">
+          <TabsTrigger value="products">מוצרים</TabsTrigger>
+          <TabsTrigger value="orders">הזמנות</TabsTrigger>
+          <TabsTrigger value="content">עריכת האתר</TabsTrigger>
+        </TabsList>
+        <TabsContent value="orders"><AdminOrders userId={user.id} /></TabsContent>
+        <TabsContent value="content"><AdminContent /></TabsContent>
+        <TabsContent value="products">
+      <div className="mt-6 overflow-hidden rounded-lg border border-border bg-card">
         {isLoading ? (
           <p className="p-10 text-center text-muted-foreground">Loading…</p>
         ) : data.length === 0 ? (
@@ -111,6 +125,8 @@ function Admin() {
           </ul>
         )}
       </div>
+        </TabsContent>
+      </Tabs>
 
       <Dialog open={editing !== null} onOpenChange={(o) => !o && setEditing(null)}>
         <DialogContent className="max-h-[90vh] overflow-y-auto">
@@ -186,7 +202,7 @@ function ProductForm({ product, onDone }: { product: Product | null; onDone: () 
       <div>
         <label className={label}>Image</label>
         {(file || product?.imageSrc) && (
-          <img src={file ? URL.createObjectURL(file) : product!.imageSrc!} alt="" className="mb-2 h-32 w-32 rounded object-cover" />
+          <img src={file ? URL.createObjectURL(file) : product?.imageSrc ?? undefined} alt="" className="mb-2 h-32 w-32 rounded object-cover" />
         )}
         <input type="file" accept="image/*" onChange={(e) => setFile(e.target.files?.[0] ?? null)} className="text-sm" />
       </div>

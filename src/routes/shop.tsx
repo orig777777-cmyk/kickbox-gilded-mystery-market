@@ -9,6 +9,8 @@ export const Route = createFileRoute("/shop")({
       { name: "description", content: "Browse every KICKBOX football and basketball mystery box. Filter by league, size and price." },
       { property: "og:title", content: "All Mystery Boxes | KICKBOX" },
       { property: "og:description", content: "Browse every KICKBOX football and basketball mystery box." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Shop,

@@ -5,13 +5,17 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { useCart } from "@/lib/cart";
+import type { CartItem } from "@/lib/cart-context";
+import { checkoutTotal } from "@/lib/checkout";
 
 // Publishable PayPal client ID (safe to ship in the browser).
 const PAYPAL_CLIENT_ID =
   "BAAPqx-gFIOlo5OrPgp2zp6wLxqHFkJKDQNNu9rhv8691-CKJQ3c6lEh8dsG5edE_WO1e5Ltnz0Vf5c0YU";
 
-export function PayPalCheckout() {
-  const { items, total, clear } = useCart();
+export function PayPalCheckout({ checkoutItems, onComplete, compact = false }: { checkoutItems?: CartItem[]; onComplete?: () => void; compact?: boolean }) {
+  const cart = useCart();
+  const items = checkoutItems ?? cart.items;
+  const total = checkoutTotal(items);
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", phone: "", city: "", address: "" });
   const ready = Object.values(form).every((v) => v.trim().length > 1);
@@ -19,7 +23,7 @@ export function PayPalCheckout() {
     setForm({ ...form, [k]: e.target.value });
 
   return (
-    <div className="mt-8 space-y-4 rounded-lg border border-border bg-card p-5">
+    <div className={compact ? "space-y-4" : "mt-8 space-y-4 rounded-lg border border-border bg-card p-5"}>
       <h2 className="text-3xl">Shipping details</h2>
       <div className="grid gap-3 sm:grid-cols-2">
         <Input placeholder="Full name" value={form.name} onChange={set("name")} />
@@ -42,7 +46,9 @@ export function PayPalCheckout() {
             })
           }
           onApprove={async (_d, actions) => {
-            const res = await actions.order!.capture();
+             if (!actions.order) { toast.error("Payment unavailable. Please try again."); return; }
+             const res = await actions.order.capture();
+             if (res.status !== "COMPLETED") { toast.error("Payment was not completed."); return; }
             const { error } = await supabase.from("orders").insert({
               paypal_order_id: res.id ?? "",
               customer_name: form.name,
@@ -54,7 +60,8 @@ export function PayPalCheckout() {
               status: "paid",
             });
             if (error) toast.error("Payment received, but saving the order failed. Contact us.");
-            clear();
+             if (!checkoutItems) cart.clear();
+             onComplete?.();
             navigate({ to: "/order-success" });
           }}
           onError={() => toast.error("Payment failed. Please try again.")}

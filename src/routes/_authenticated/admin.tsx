@@ -21,6 +21,8 @@ export const Route = createFileRoute("/_authenticated/admin")({
       { name: "description", content: "Manage KICKBOX products." },
       { property: "og:title", content: "Admin Dashboard | KICKBOX" },
       { property: "og:description", content: "Manage KICKBOX products." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
   }),

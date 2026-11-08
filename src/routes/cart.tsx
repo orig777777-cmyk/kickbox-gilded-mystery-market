@@ -13,6 +13,8 @@ export const Route = createFileRoute("/cart")({
       { name: "description", content: "Review the mystery boxes in your KICKBOX cart." },
       { property: "og:title", content: "Your Cart | KICKBOX" },
       { property: "og:description", content: "Review the mystery boxes in your KICKBOX cart." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Cart,

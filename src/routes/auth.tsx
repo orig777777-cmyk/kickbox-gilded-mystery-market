@@ -12,6 +12,8 @@ export const Route = createFileRoute("/auth")({
       { name: "description", content: "Sign in to manage the KICKBOX store." },
       { property: "og:title", content: "Admin Sign In | KICKBOX" },
       { property: "og:description", content: "Sign in to manage the KICKBOX store." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
   }),

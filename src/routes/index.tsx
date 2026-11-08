@@ -14,6 +14,8 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Premium football and basketball jersey mystery boxes. Open the box, find your legend." },
       { property: "og:title", content: "KICKBOX | Premium Football & Basketball Mystery Boxes" },
       { property: "og:description", content: "Premium football and basketball jersey mystery boxes." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,

@@ -20,6 +20,8 @@ export const Route = createFileRoute("/product/$id")({
       { name: "description", content: "KICKBOX premium mystery box details." },
       { property: "og:title", content: "Mystery Box | KICKBOX" },
       { property: "og:description", content: "KICKBOX premium mystery box details." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: ProductPage,

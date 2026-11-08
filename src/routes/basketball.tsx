@@ -9,6 +9,8 @@ export const Route = createFileRoute("/basketball")({
       { name: "description", content: "Basketball mystery boxes from the NBA, EuroLeague and more." },
       { property: "og:title", content: "Basketball Mystery Boxes | KICKBOX" },
       { property: "og:description", content: "Basketball mystery boxes from the NBA, EuroLeague and more." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Page,

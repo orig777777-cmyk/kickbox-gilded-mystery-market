@@ -10,3 +10,10 @@ export function directCheckoutItem(product: Product, size?: string): CartItem {
 export function checkoutTotal(items: CartItem[], shipping = 0) {
   return Math.round((items.reduce((sum, item) => sum + item.price * item.qty, 0) + (items.length ? shipping : 0)) * 100) / 100;
 }
+
+export function orderItemsSnapshot(items: CartItem[]) {
+  return items.map(({ id, name, size, qty, price, notes, printing, patches, basePrice, printingFee, patchesFee }) => ({
+    id, name, size, qty, price, notes: notes ?? "", printing: printing ?? false, patches: patches ?? false,
+    basePrice: basePrice ?? price, printingFee: printingFee ?? 0, patchesFee: patchesFee ?? 0,
+  }));
+}

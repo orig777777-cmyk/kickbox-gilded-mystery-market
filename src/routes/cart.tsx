@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ProductCard";
 import { useCart } from "@/lib/cart";
 import { formatPrice } from "@/lib/catalog";
+import { cartLineKey } from "@/lib/purchase-options";
 
 export const Route = createFileRoute("/cart")({
   head: () => ({
@@ -34,25 +35,27 @@ function Cart() {
         <>
           <ul className="mt-8 divide-y divide-border rounded-lg border border-border bg-card">
             {items.map((i) => (
-              <li key={i.id + i.size} className="flex items-center gap-4 p-4">
+              <li key={cartLineKey(i)} className="flex flex-wrap items-center gap-3 p-4 sm:gap-4">
                 <div className="size-16 shrink-0 overflow-hidden rounded bg-muted">
                   {i.imageSrc && <img src={i.imageSrc} alt="" className="size-full object-cover" />}
                 </div>
-                <div className="min-w-0 flex-1">
+                <div className="min-w-0 flex-1 basis-32">
                   <p className="truncate font-semibold">{i.name}</p>
                   <p className="text-sm text-muted-foreground">Size {i.size} · {formatPrice(i.price)}</p>
+                  {(i.printing || i.patches) && <p className="text-xs text-gold" dir="rtl">{[i.printing && "שם ומספר", i.patches && "פאצ׳ים"].filter(Boolean).join(" · ")}</p>}
+                  {i.notes && <p className="mt-1 whitespace-pre-wrap break-words text-xs text-muted-foreground" dir="rtl">{i.notes}</p>}
                 </div>
                 <div className="flex items-center gap-2">
-                  <button aria-label="Decrease" onClick={() => setQty(i.id, i.size, i.qty - 1)}><Minus className="size-4" /></button>
+                  <Button variant="ghost" size="icon" aria-label="Decrease" disabled={i.qty <= 1} onClick={() => setQty(i.id, i.size, i.qty - 1, cartLineKey(i))}><Minus className="size-4" /></Button>
                   <span className="w-6 text-center">{i.qty}</span>
-                  <button aria-label="Increase" onClick={() => setQty(i.id, i.size, i.qty + 1)}><Plus className="size-4" /></button>
+                  <Button variant="ghost" size="icon" aria-label="Increase" onClick={() => setQty(i.id, i.size, i.qty + 1, cartLineKey(i))}><Plus className="size-4" /></Button>
                 </div>
-                <button aria-label="Remove" onClick={() => remove(i.id, i.size)} className="text-muted-foreground hover:text-destructive"><Trash2 className="size-4" /></button>
+                <Button variant="ghost" size="icon" aria-label="Remove" onClick={() => remove(i.id, i.size, cartLineKey(i))} className="text-muted-foreground hover:text-destructive"><Trash2 className="size-4" /></Button>
               </li>
             ))}
           </ul>
           <div className="mt-6 flex items-center justify-between">
-            <p className="font-display text-3xl">Total <span className="text-gold">{formatPrice(total)}</span></p>
+            <p className="font-display text-3xl">Subtotal <span className="text-gold">{formatPrice(total)}</span></p>
           </div>
           <PayPalCheckout />
         </>

@@ -19,6 +19,7 @@ export type Product = {
   name: string;
   description: string;
   price: number;
+  original_price?: number | null;
   sport: Sport;
   league: string;
   sizes: string[];
@@ -64,3 +65,7 @@ export function applyFilters(products: Product[], f: Filters): Product[] {
 
 export const formatPrice = (n: number) =>
   new Intl.NumberFormat("en-US", { style: "currency", currency: "ILS", currencyDisplay: "narrowSymbol" }).format(n);
+
+export function saleOriginalPrice(p: Pick<Product, "price" | "original_price">): number | null {
+  return p.original_price != null && p.original_price > p.price ? p.original_price : null;
+}

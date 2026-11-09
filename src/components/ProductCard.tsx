@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Package } from "lucide-react";
-import { formatPrice, type Product } from "@/lib/catalog";
+import { type Product } from "@/lib/catalog";
+import { ProductPrice } from "@/components/ProductPrice";
 
 export function ProductCard({ p }: { p: Product }) {
   return (
@@ -28,7 +29,7 @@ export function ProductCard({ p }: { p: Product }) {
           {p.sport} · {p.league}
         </p>
         <h3 className="truncate font-sans text-base font-semibold tracking-normal">{p.name}</h3>
-        <p className="font-display text-2xl">{formatPrice(p.price)}</p>
+        <ProductPrice product={p} />
       </div>
     </Link>
   );

@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState, type ReactNode } from "react";
 import { CartContext, type CartContextValue, type CartItem } from "@/lib/cart-context";
+import { cartLineKey } from "@/lib/purchase-options";
 
 export type { CartItem } from "@/lib/cart-context";
 const KEY = "kickbox-cart";
@@ -19,16 +20,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const value: CartContextValue = {
     items,
     add: (item) => {
-      const found = items.find((i) => i.id === item.id && i.size === item.size);
+      const found = items.find((i) => cartLineKey(i) === cartLineKey(item));
       save(
         found
           ? items.map((i) => (i === found ? { ...i, qty: i.qty + 1 } : i))
           : [...items, { ...item, qty: 1 }],
       );
     },
-    setQty: (id, size, qty) =>
-      save(items.map((i) => (i.id === id && i.size === size ? { ...i, qty: Math.max(1, qty) } : i))),
-    remove: (id, size) => save(items.filter((i) => !(i.id === id && i.size === size))),
+    setQty: (id, size, qty, lineKey) =>
+      save(items.map((i) => (i.id === id && i.size === size && (!lineKey || cartLineKey(i) === lineKey) ? { ...i, qty: Math.max(1, qty) } : i))),
+    remove: (id, size, lineKey) => save(items.filter((i) => !(i.id === id && i.size === size && (!lineKey || cartLineKey(i) === lineKey)))),
     clear: () => save([]),
     count: items.reduce((s, i) => s + i.qty, 0),
     total: items.reduce((s, i) => s + i.qty * i.price, 0),

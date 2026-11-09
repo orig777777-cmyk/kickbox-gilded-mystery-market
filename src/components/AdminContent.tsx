@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { uploadProductImage, removeProductImage } from "@/lib/products";
 import { homeContentSchema, siteContentQuery, type HomeContent } from "@/lib/site-content";
 import hero from "@/assets/hero-box.jpg";
+import { AdminCheckoutSettings } from "@/components/AdminCheckoutSettings";
 
 const fields: { key: keyof HomeContent; label: string }[] = [
   { key: "eyebrow", label: "כותרת קטנה" }, { key: "title", label: "כותרת ראשית" }, { key: "highlight", label: "כותרת מודגשת" }, { key: "description", label: "תיאור ראשי" },
@@ -20,7 +21,7 @@ export function AdminContent() {
   const query = useQuery(siteContentQuery);
   if (query.isPending) return <p className="py-10">טוען…</p>;
   if (query.isError) return <p className="py-10 text-destructive">לא ניתן לטעון את תוכן האתר.</p>;
-  return <ContentForm initial={query.data.content} imageSrc={query.data.imageSrc ?? hero} />;
+  return <><AdminCheckoutSettings /><ContentForm initial={query.data.content} imageSrc={query.data.imageSrc ?? hero} /></>;
 }
 
 function ContentForm({ initial, imageSrc }: { initial: HomeContent; imageSrc: string }) {

@@ -33,3 +33,6 @@ use the editor.
 - Store homepage edits in the admin-write/public-read site_content singleton; keep defaults in a browser-safe module so unsaved stores remain usable.
 - Share checkout UI between cart and product purchases; pass a separate one-item snapshot for Buy now so existing cart contents remain untouched.
 - Query customer orders only from the authenticated admin view using the user's client and database-enforced admin read policy.
+- Store checkout fees in the admin-write/public-read site_content singleton separately from homepage content; snapshot per-item options and fees into orders so fulfillment remains accurate after price edits.
+- Identify cart lines by product, size, customization and price; different customer requests must never merge or change quantity together.
+- Treat products.price as the payable price and original_price as an optional comparison only; never charge the crossed-out comparison amount.

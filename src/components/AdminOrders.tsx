@@ -12,7 +12,7 @@ export function AdminOrders({ userId }: { userId: string }) {
   const orders = useQuery({
     queryKey: ["admin-orders", userId],
     queryFn: async () => {
-      const { data, error } = await supabase.from("orders").select("id,customer_name,phone,city,address,items,total,status,created_at,paypal_order_id").order("created_at", { ascending: false });
+      const { data, error } = await supabase.from("orders").select("id,customer_name,phone,city,address,items,total,status,created_at,paypal_order_id,shipping_total").order("created_at", { ascending: false });
       if (error) throw error;
       return data;
     },
@@ -37,7 +37,8 @@ export function AdminOrders({ userId }: { userId: string }) {
                 <div><dt className="text-xs text-muted-foreground">טלפון</dt><dd><a className="text-gold" href={`tel:${order.phone}`} dir="ltr">{order.phone}</a></dd></div>
                 <div><dt className="text-xs text-muted-foreground">כתובת משלוח</dt><dd className="break-words">{order.address}, {order.city}</dd></div>
               </dl>
-              <ul className="divide-y divide-border">{parseOrderItems(order.items).map((item, index) => <li key={`${item.id}-${item.size}-${index}`} className="flex flex-wrap justify-between gap-2 py-2 text-sm"><span>{item.name} · מידה {item.size} · כמות {item.qty}</span><span>{formatPrice(item.price * item.qty)}</span></li>)}</ul>
+              <ul className="divide-y divide-border">{parseOrderItems(order.items).map((item, index) => <li key={`${item.id}-${item.size}-${index}`} className="py-3 text-sm"><div className="flex flex-wrap justify-between gap-2"><span>{item.name} · מידה {item.size} · כמות {item.qty}</span><span>{formatPrice(item.price * item.qty)}</span></div>{item.printing && <p className="mt-1 text-gold">הדפסת שם ומספר · {formatPrice(item.printingFee ?? 0)} לחולצה</p>}{item.patches && <p className="mt-1 text-gold">פאצ׳ים · {formatPrice(item.patchesFee ?? 0)} לחולצה</p>}{item.notes && <p className="mt-2 whitespace-pre-wrap break-words text-muted-foreground">בקשות: {item.notes}</p>}</li>)}</ul>
+              <p className="mt-3 text-sm">משלוח: {formatPrice(order.shipping_total)}</p>
               <p className="mt-3 break-all text-xs text-muted-foreground">PayPal: {order.paypal_order_id}</p>
             </article>
           ))}

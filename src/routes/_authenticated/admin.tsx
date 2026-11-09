@@ -152,16 +152,18 @@ const schema = z.object({
   name: z.string().trim().min(1, "Name is required").max(150),
   description: z.string().trim().max(3000),
   price: z.number({ invalid_type_error: "Price is required" }).min(0).max(100000),
+  original_price: z.number().min(0).max(100000).nullable(),
   sport: z.enum(["football", "basketball"]),
   league: z.string().min(1, "Choose a league"),
   sizes: z.array(z.string()),
   available: z.boolean(),
-});
+}).refine((row) => row.original_price === null || row.original_price > row.price, { message: "המחיר הקודם חייב להיות גבוה ממחיר המכירה", path: ["original_price"] });
 
 function ProductForm({ product, onDone }: { product: Product | null; onDone: () => void }) {
   const [name, setName] = useState(product?.name ?? "");
   const [description, setDescription] = useState(product?.description ?? "");
   const [price, setPrice] = useState(product ? String(product.price) : "");
+  const [originalPrice, setOriginalPrice] = useState(product?.original_price != null ? String(product.original_price) : "");
   const [sport, setSport] = useState<Sport>(product?.sport ?? "football");
   const [league, setLeague] = useState(product?.league ?? "");
   const [sizes, setSizes] = useState<string[]>(product?.sizes ?? []);
@@ -171,7 +173,7 @@ function ProductForm({ product, onDone }: { product: Product | null; onDone: () 
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const parsed = schema.safeParse({ name, description, price: price === "" ? NaN : Number(price), sport, league, sizes, available });
+    const parsed = schema.safeParse({ name, description, price: price === "" ? NaN : Number(price), original_price: originalPrice.trim() === "" ? null : Number(originalPrice), sport, league, sizes, available });
     if (!parsed.success) { toast.error(parsed.error.issues[0]?.message ?? "Invalid input"); return; }
     setBusy(true);
     try {
@@ -216,8 +218,10 @@ function ProductForm({ product, onDone }: { product: Product | null; onDone: () 
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className={label}>Price (ILS · ₪)</label>
-          <input type="number" step="0.01" min="0" className={input} value={price} onChange={(e) => setPrice(e.target.value)} />
+          <label htmlFor="product-price" className={label}>מחיר לתשלום (₪)</label>
+          <input id="product-price" type="number" step="0.01" min="0" className={input} value={price} onChange={(e) => setPrice(e.target.value)} />
+          <label htmlFor="product-original-price" className={`${label} mt-3`}>מחיר קודם למחיקה (₪, אופציונלי)</label>
+          <input id="product-original-price" type="number" step="0.01" min="0" className={input} value={originalPrice} onChange={(e) => setOriginalPrice(e.target.value)} />
         </div>
         <div>
           <label className={label}>Sport</label>

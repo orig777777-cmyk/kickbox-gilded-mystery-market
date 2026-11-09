@@ -12,6 +12,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { PayPalCheckout } from "@/components/PayPalCheckout";
 import { directCheckoutItem } from "@/lib/checkout";
 import type { CartItem } from "@/lib/cart-context";
+import { ProductPrice } from "@/components/ProductPrice";
+import { PurchaseOptions } from "@/components/PurchaseOptions";
+import { checkoutSettingsQuery } from "@/lib/checkout-settings";
+import { checkoutDefaults, customizeItem, type PurchaseOptions as Options } from "@/lib/purchase-options";
 
 export const Route = createFileRoute("/product/$id")({
   head: () => ({
@@ -34,6 +38,8 @@ function ProductPage() {
   const [size, setSize] = useState<string>();
   const [buyNowItem, setBuyNowItem] = useState<CartItem | null>(null);
   const cart = useCart();
+  const settings = useQuery(checkoutSettingsQuery);
+  const [options, setOptions] = useState<Options>({ notes: "", printing: false, patches: false });
 
   if (isLoading) return <div className="p-20 text-center text-muted-foreground">Loading…</div>;
   if (!p)
@@ -45,9 +51,10 @@ function ProductPage() {
 
   const needsSize = p.sizes.length > 0;
   const add = () => {
-    if (needsSize && !size) { toast.error("Please choose a size"); return; }
-    cart.add({ id: p.id, name: p.name, price: p.price, size: size ?? "-", imageSrc: p.imageSrc });
-    toast.success("Added to cart");
+    try {
+      cart.add(customizeItem(directCheckoutItem(p, size), options, settings.data ?? checkoutDefaults));
+      toast.success("Added to cart");
+    } catch (error) { toast.error(error instanceof Error ? error.message : "Please choose a size"); }
   };
 
   return (
@@ -60,7 +67,7 @@ function ProductPage() {
           {p.sport} · {p.league}
         </Link>
         <h1 className="mt-2 text-5xl">{p.name}</h1>
-        <p className="mt-3 font-display text-4xl text-gold">{formatPrice(p.price)}</p>
+        <div className="mt-3"><ProductPrice product={p} large /></div>
         <p className="mt-6 whitespace-pre-line text-muted-foreground">{p.description}</p>
         {needsSize && (
           <div className="mt-8">
@@ -74,11 +81,14 @@ function ProductPage() {
             </div>
           </div>
         )}
-        <Button variant="gold" size="lg" className="mt-8 w-full" disabled={!p.available} onClick={add}>
+        <PurchaseOptions value={options} onChange={setOptions} settings={settings.data ?? checkoutDefaults} disabled={!settings.isSuccess} />
+        {(options.printing || options.patches) && <p className="mt-4 text-lg text-gold" dir="rtl">מחיר לחולצה כולל תוספות: {formatPrice(customizeItem({ id: p.id, name: p.name, price: p.price, size: size ?? "-", qty: 1 }, options, settings.data ?? checkoutDefaults).price)}</p>}
+        {settings.isError && <p className="mt-3 text-destructive">לא ניתן לטעון את מחירי התוספות והמשלוח.</p>}
+        <Button variant="gold" size="lg" className="mt-8 w-full" disabled={!p.available || !settings.isSuccess} onClick={add}>
           {p.available ? "Add to cart" : "Sold out"}
         </Button>
-        <Button variant="goldOutline" size="lg" className="mt-3 w-full" disabled={!p.available} onClick={() => {
-          try { setBuyNowItem(directCheckoutItem(p, size)); }
+        <Button variant="goldOutline" size="lg" className="mt-3 w-full" disabled={!p.available || !settings.isSuccess} onClick={() => {
+          try { setBuyNowItem(customizeItem(directCheckoutItem(p, size), options, settings.data ?? checkoutDefaults)); }
           catch (error) { toast.error(error instanceof Error ? error.message : "Please choose a size"); }
         }}>Buy now</Button>
         <Dialog open={buyNowItem !== null} onOpenChange={(open) => { if (!open) setBuyNowItem(null); }}>

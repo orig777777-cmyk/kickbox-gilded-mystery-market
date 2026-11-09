@@ -24,6 +24,7 @@ export type Database = {
           items: Json
           paypal_order_id: string
           phone: string
+          shipping_total: number
           status: string
           total: number
         }
@@ -36,6 +37,7 @@ export type Database = {
           items?: Json
           paypal_order_id: string
           phone: string
+          shipping_total?: number
           status?: string
           total: number
         }
@@ -48,6 +50,7 @@ export type Database = {
           items?: Json
           paypal_order_id?: string
           phone?: string
+          shipping_total?: number
           status?: string
           total?: number
         }
@@ -62,6 +65,7 @@ export type Database = {
           image_url: string | null
           league: string
           name: string
+          original_price: number | null
           price: number
           sizes: string[]
           sport: string
@@ -75,6 +79,7 @@ export type Database = {
           image_url?: string | null
           league?: string
           name: string
+          original_price?: number | null
           price?: number
           sizes?: string[]
           sport: string
@@ -88,6 +93,7 @@ export type Database = {
           image_url?: string | null
           league?: string
           name?: string
+          original_price?: number | null
           price?: number
           sizes?: string[]
           sport?: string
@@ -97,16 +103,19 @@ export type Database = {
       }
       site_content: {
         Row: {
+          checkout_settings: Json
           content: Json
           id: string
           updated_at: string
         }
         Insert: {
+          checkout_settings?: Json
           content?: Json
           id: string
           updated_at?: string
         }
         Update: {
+          checkout_settings?: Json
           content?: Json
           id?: string
           updated_at?: string

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KICKBOX - חנות כדורגל ומרצ'נדייז</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 pb-20">
+
+    <!-- באנר עליון -->
+    <div class="bg-blue-600 text-white text-xs font-semibold py-2 text-center">
+        משלוח עד הבית | קולקציות חדשות
+    </div>
+
+    <!-- ניווט עליון -->
+    <nav class="sticky top-0 bg-white border-b z-30 px-4 py-3 flex justify-between items-center shadow-sm">
+        <button onclick="toggleMenu()" class="text-xl text-gray-700">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="text-2xl font-black tracking-widest text-blue-900">KICKBOX</div>
+        <button onclick="toggleCart()" class="relative text-xl text-gray-700">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <span id="cart-count" class="absolute -top-1 -right-2 bg-blue-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+        </button>
+    </nav>
+
+    <!-- ראשי / באנר אמבפה -->
+    <div class="relative w-full h-[380px] bg-slate-900 overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover opacity-60">
+        <div class="absolute inset-0 bg-gradient-to-t from-blue-50/90 via-transparent to-transparent flex flex-col justify-end p-6 text-center">
+            <h1 class="text-3xl font-black text-slate-900 tracking-tight leading-none mb-1">.OPEN THE BOX</h1>
+            <h2 class="text-xl font-bold text-blue-600 mb-2">.FIND YOUR LEGEND</h2>
+            <p class="text-xs text-gray-600 mb-4">Discover your next football jersey</p>
+            <button class="bg-blue-600 text-white font-bold py-2.5 px-6 rounded-full text-xs shadow-lg mx-auto uppercase tracking-wider">SHOP NOW</button>
+        </div>
+    </div>
+
+    <!-- הנמכרים ביותר -->
+    <section class="p-4">
+        <h3 class="text-xl font-black text-center mb-1">הנמכרים ביותר</h3>
+        <p class="text-xs text-gray-400 text-center mb-4">המוצרים שאתם הכי אוהבים</p>
+        
+        <div class="grid grid-cols-2 gap-3">
+            <!-- מוצר 1 -->
+            <div onclick="openProduct('חולצת ריאל מדריד', '89.90', '149.90', 'https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=500&auto=format&fit=crop')" class="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 cursor-pointer">
+                <div class="bg-gray-100 rounded-xl mb-2 overflow-hidden aspect-square">
+                    <img src="https://images.unsplash.com/photo-1577223625816-7546f13df25d?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover">
+                </div>
+                <div class="font-bold text-sm text-center">Real Madrid Jersey</div>
+                <div class="text-blue-600 font-black text-center text-sm">₪89.90 <span class="text-gray-300 line-through text-xs font-normal">₪149.90</span></div>
+            </div>
+
+            <!-- מוצר 2 -->
+            <div onclick="openProduct('חולצת ברצלונה', '89.90', '149.90', 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=500&auto=format&fit=crop')" class="bg-white rounded-2xl p-3 shadow-sm border border-gray-100 cursor-pointer">
+                <div class="bg-gray-100 rounded-xl mb-2 overflow-hidden aspect-square">
+                    <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover">
+                </div>
+                <div class="font-bold text-sm text-center">Barcelona Jersey</div>
+                <div class="text-blue-600 font-black text-center text-sm">₪89.90 <span class="text-gray-300 line-through text-xs font-normal">₪149.90</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- במה בוחרים? -->
+    <section class="p-4">
+        <h3 class="text-xl font-black text-center mb-4">במה בוחרים?</h3>
+        <div class="grid grid-cols-2 gap-3">
+            <div class="relative rounded-2xl overflow-hidden h-48 shadow-sm">
+                <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/30 flex items-end justify-center p-3">
+                    <span class="text-white font-black text-sm uppercase tracking-wider">BASKETBALL</span>
+                </div>
+            </div>
+            <div class="relative rounded-2xl overflow-hidden h-48 shadow-sm">
+                <img src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/30 flex items-end justify-center p-3">
+                    <span class="text-white font-black text-sm uppercase tracking-wider">FOOTBALL</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- כל הקטגוריות -->
+    <section class="p-4">
+        <h3 class="text-xl font-black text-center mb-4">כל הקטגוריות</h3>
+        <div class="grid grid-cols-2 gap-3">
+            <div class="bg-white rounded-2xl p-2 shadow-sm border border-gray-100 text-center">
+                <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=400&auto=format&fit=crop" class="rounded-xl h-28 w-full object-cover mb-2">
+                <span class="font-bold text-xs">Streetwear</span>
+            </div>
+            <div class="bg-white rounded-2xl p-2 shadow-sm border border-gray-100 text-center">
+                <img src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=400&auto=format&fit=crop" class="rounded-xl h-28 w-full object-cover mb-2">
+                <span class="font-bold text-xs">Mystery Box</span>
+            </div>
+            <div class="bg-white rounded-2xl p-2 shadow-sm border border-gray-100 text-center">
+                <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=400&auto=format&fit=crop" class="rounded-xl h-28 w-full object-cover mb-2">
+                <span class="font-bold text-xs">אביזרים</span>
+            </div>
+            <div class="bg-white rounded-2xl p-2 shadow-sm border border-gray-100 text-center">
+                <img src="https://images.unsplash.com/photo-1519315901367-f34ff9154487?q=80&w=400&auto=format&fit=crop" class="rounded-xl h-28 w-full object-cover mb-2">
+                <span class="font-bold text-xs">ילדים</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- לקוחות מספרים -->
+    <section class="p-4">
+        <div class="bg-blue-50/80 rounded-2xl p-6 text-center border border-blue-100">
+            <h4 class="text-lg font-bold text-blue-900 mb-1">לקוחות מספרים</h4>
+            <div class="text-amber-400 text-sm mb-2">★★★★★</div>
+            <p class="text-xs text-gray-500">אזור ביקורות עם תמונות וחוות דעת של לקוחות</p>
+        </div>
+    </section>
+
+    <!-- שאלות נפוצות -->
+    <section class="p-4 mb-8">
+        <h3 class="text-xl font-black text-center mb-4">שאלות נפוצות</h3>
+        <div class="space-y-2">
+            <details class="bg-white rounded-xl p-3 border border-gray-100 shadow-sm">
+                <summary class="font-bold text-xs cursor-pointer flex justify-between items-center">
+                    <span>משלוחים וזמני אספקה</span>
+                    <i class="fa-solid fa-chevron-down text-gray-400 text-[10px]"></i>
+                </summary>
+                <p class="text-xs text-gray-600 mt-2">משלוחים לכל חלקי הארץ תוך 3-7 ימי עסקים בלבד עם שליח עד הבית.</p>
+            </details>
+            <details class="bg-white rounded-xl p-3 border border-gray-100 shadow-sm">
+                <summary class="font-bold text-xs cursor-pointer flex justify-between items-center">
+                    <span>איך מזמינים Mystery Box?</span>
+                    <i class="fa-solid fa-chevron-down text-gray-400 text-[10px]"></i>
+                </summary>
+                <p class="text-xs text-gray-600 mt-2">בוחרים מידה וסגנון, ואנחנו דואגים להפתיע אותך עם חולצה נדירה מהקולקציה!</p>
+            </details>
+        </div>
+    </section>
+
+    <!-- דף מוצר (MODAL) -->
+    <div id="product-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end justify-center">
+        <div class="bg-white w-full max-w-md rounded-t-3xl max-h-[90vh] overflow-y-auto relative p-5 pb-24 shadow-2xl">
+            <!-- כפתור סגירה -->
+            <button onclick="closeProduct()" class="absolute top-4 left-4 bg-gray-100 w-8 h-8 rounded-full flex items-center justify-center text-gray-600 font-bold">✕</button>
+            
+            <div class="text-center font-bold text-gray-400 text-xs mb-3">KICKBOX DETAIL</div>
+            
+            <!-- תמונת מוצר -->
+            <div class="rounded-2xl overflow-hidden mb-4 bg-gray-100 h-64">
+                <img id="modal-img" src="" class="w-full h-full object-cover">
+            </div>
+
+            <!-- כותרת ومחיר -->
+            <h2 id="modal-title" class="text-xl font-black text-center"></h2>
+            <div class="text-center mb-4">
+                <span id="modal-price" class="text-blue-600 font-black text-xl"></span>
+                <span id="modal-old-price" class="text-gray-300 line-through text-sm mr-2"></span>
+            </div>
+
+            <!-- בחירת מידות -->
+            <div class="mb-4">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="font-bold text-xs">בחר מידה:</span>
+                    <a href="#" class="text-blue-600 text-xs underline font-semibold">מדריך מידות</a>
+                </div>
+                <div class="grid grid-cols-5 gap-2">
+                    <button onclick="selectSize(this)" class="size-btn border rounded-xl py-2 font-bold text-xs hover:border-blue-600">S</button>
+                    <button onclick="selectSize(this)" class="size-btn border rounded-xl py-2 font-bold text-xs bg-blue-600 text-white border-blue-600">M</button>
+                    <button onclick="selectSize(this)" class="size-btn border rounded-xl py-2 font-bold text-xs hover:border-blue-600">L</button>
+                    <button onclick="selectSize(this)" class="size-btn border rounded-xl py-2 font-bold text-xs hover:border-blue-600">XL</button>
+                    <button onclick="selectSize(this)" class="size-btn border rounded-xl py-2 font-bold text-xs hover:border-blue-600">XXL</button>
+                </div>
+            </div>
+
+            <!-- פאצ'ים -->
+            <div class="mb-4">
+                <span class="font-bold text-xs block mb-2">הוספת פאצ'ים:</span>
+                <div class="grid grid-cols-2 gap-2">
+                    <label class="border rounded-xl p-2.5 flex items-center justify-between text-xs cursor-pointer">
+                        <span>ליגת האלופות (+₪15)</span>
+                        <input type="checkbox" onchange="updateTotalPrice()" class="patch-check accent-blue-600" value="15">
+                    </label>
+                    <label class="border rounded-xl p-2.5 flex items-center justify-between text-xs cursor-pointer">
+                        <span>פאצ' הליגה הרשמי (+₪15)</span>
+                        <input type="checkbox" onchange="updateTotalPrice()" class="patch-check accent-blue-600" value="15">
+                    </label>
+                </div>
+            </div>
+
+            <!-- הדפסה אישית -->
+            <div class="mb-4">
+                <span class="font-bold text-xs block mb-2">הדפסה אישית על הגב (+₪20):</span>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" placeholder="שם על הגב" class="border rounded-xl p-2 text-xs w-full focus:outline-none focus:border-blue-600">
+                    <input type="number" placeholder="מספר" class="border rounded-xl p-2 text-xs w-full focus:outline-none focus:border-blue-600">
+                </div>
+            </div>
+
+            <!-- כפתור הוספה לסל דביק -->
+            <div class="fixed bottom-0 left-0 right-0 p-4 bg-white/90 backdrop-blur-md border-t border-gray-100 z-50 max-w-md mx-auto">
+                <button onclick="addToCart()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-blue-500/30">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span>הוסף לסל • ₪<span id="btn-price">89.90</span></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let basePrice = 89.90;
+
+        function openProduct(title, price, oldPrice, img) {
+            basePrice = parseFloat(price);
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-price').innerText = '₪' + price;
+            document.getElementById('modal-old-price').innerText = '₪' + oldPrice;
+            document.getElementById('modal-img').src = img;
+            updateTotalPrice();
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function closeProduct() {
+            document.getElementById('product-modal').classList.add('hidden');
+        }
+
+        function selectSize(btn) {
+            document.querySelectorAll('.size-btn').forEach(b => {
+                b.classList.remove('bg-blue-600', 'text-white', 'border-blue-600');
+            });
+            btn.classList.add('bg-blue-600', 'text-white', 'border-blue-600');
+        }
+
+        function updateTotalPrice() {
+            let total = basePrice;
+            document.querySelectorAll('.patch-check:checked').forEach(c => {
+                total += parseFloat(c.value);
+            });
+            document.getElementById('btn-price').innerText = total.toFixed(2);
+        }
+
+        function addToCart() {
+            let count = document.getElementById('cart-count');
+            count.innerText = parseInt(count.innerText) + 1;
+            closeProduct();
+        }
+
+        function toggleMenu() { alert('תפריט צדי'); }
+        function toggleCart() { alert('סל קניות'); }
+    </script>
+</body>
+</html>
